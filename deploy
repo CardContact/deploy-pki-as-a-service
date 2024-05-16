@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -xe
+
+DOCKER_CONTEXT=default
+VERSION=1.0
+
+# Try to obtain local IVY configuration, use public repo otherwise
+wget http://jenkins.mi.cardcontact.de/ivysettings.xml || true
+
+cd pkiaas
+ant clean
+cd ..
+
+
+cd pkiaas
+ant -Dunpack-fs=1
+chmod +x scriptingserver
+docker --context $DOCKER_CONTEXT build -t pkiaas-test .
+
+cd ..
+

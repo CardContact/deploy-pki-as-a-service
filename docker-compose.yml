@@ -1,0 +1,29 @@
+version: '3.6'
+services:
+  mariadb-test:
+      environment:
+          - MARIADB_DATABASE=pkiaas
+          - MARIADB_ROOT_PASSWORD=changeme
+          - MARIADB_USER=dbuser
+          - MARIADB_PASSWORD=changeme
+      volumes:
+          - dbdata:/var/lib/mysql
+      container_name: mariadb-test
+      image: mariadb
+#      ports:
+#          -  3307:3306
+
+  pkiaas-test:
+      container_name: pkiaas-test
+      image: pkiaas-test
+      depends_on:
+          - mariadb-test
+      restart: on-failure
+      volumes:
+          - logs:/usr/share/pkiaas/logs
+      ports:
+          - 8080:8080
+
+volumes:
+  dbdata:
+  logs:
