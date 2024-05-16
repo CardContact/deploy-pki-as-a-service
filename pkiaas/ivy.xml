@@ -1,0 +1,6 @@
+<ivy-module version="2.0">
+    <info organisation="de.cardcontact" module="pki-as-a-service-test"/>
+    <dependencies>
+        <dependency org="org.openscdp" name="pki-as-a-service" rev="latest.release"/>
+</dependencies>
+</ivy-module>

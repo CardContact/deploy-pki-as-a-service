@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="pki-as-a-service-test" xmlns:ivy="antlib:org.apache.ivy.ant" basedir="." default="resolve">
+
+	<property name="major" value="1"/>
+	<property name="minor" value="0"/>
+	<property name="revision" value="0"/>	<!-- Set by jenkins -->
+	<property name="version" value="${major}.${minor}.${revision}"/>
+	<echo message="Version number is ${version}"/>
+
+	<property name="shortname" value="${ant.project.name}"/>
+	<property name="build" location="build"/>
+	<property name="releasedir" location="released"/>
+
+	<property name="publishresolver" value="local"/>
+
+	<property name="deploymentscript" value="deploy-lab"/>
+	<property name="deploymentargs" value="test.pki-as-a-service.net"/>
+
+	<target name="ivyinit">
+		<property name="ivy.settings.file" value="../ivysettings.xml" />
+		<property name="ivy.settings.url" value="https://www.openscdp.org/ivy/ivysettings.xml" />
+		<ivy:configure host="www.openscdp.org" realm="ivy" username="user" passwd="password" />
+	</target>
+
+
+	<target name="-unpack-fs" if="unpack-fs" >
+		<untar src="${dep.to}" dest="${basedir}" compression="gzip" />
+		<delete file="${dep.to}" />
+		<echo message="Unpacked" file="${dep.to}.unpacked" />
+	</target>
+
+
+	<target name="resolve" depends="ivyinit">
+		<mkdir dir="${basedir}/lib"/>
+		<ivy:retrieve type="jar,bundle,fs,tgz"/>
+		<echo message="VERSION=&quot;${shortname} V${version}&quot;" file="${basedir}/apps/build.version"/>
+	</target>
+
+
+	<target name="clean">
+		<delete dir="${basedir}/lib"/>
+		<delete dir="${basedir}/etc/tls"/>
+		<delete dir="${basedir}/apps"/>
+		<delete dir="${basedir}/doc"/>
+		<delete dir="${basedir}/etc/template"/>
+		<delete dir="${basedir}/pki-as-a-service"/>
+		<delete dir="${basedir}/sapreq"/>
+		<delete dir="${basedir}/plugins"/>
+		<delete dir="${basedir}/scsh"/>
+		<delete dir="${basedir}/static"/>
+		<delete file="${basedir}/scriptingserver"/>
+		<delete file="${basedir}/config.js"/>
+	</target>
+</project>
