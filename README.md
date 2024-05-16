@@ -63,6 +63,6 @@ Unless that is set, you will need to pick the activation code from the logs:
 
 See our [blog](https://www.smartcard-hsm.com/2022/05/11/trustcenter-open-beta.html) and
 [screencast](https://www.smartcard-hsm.com/2022/05/09/prepare-trustcenter-token.html) how
-to create your first trustcenter to management SmartCard-HSMs, create a PKI, enroll persons
+to create your first trustcenter to manage SmartCard-HSMs, create a PKI, enroll persons
 and systems.
 

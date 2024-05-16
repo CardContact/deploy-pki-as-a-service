@@ -7,7 +7,7 @@
   </appender>
   <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-    <File>server.log</File>
+    <File>logs/server.log</File>
     <encoder>
       <pattern>%d %p %t %c - %m%n</pattern>
     </encoder>
@@ -16,14 +16,16 @@
       <FileNamePattern>logs/server.log.%i</FileNamePattern>
     </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-      <MaxFileSize>100KB</MaxFileSize>
+      <MaxFileSize>100MB</MaxFileSize>
     </triggeringPolicy>
   </appender>
+  <!--
+  <logger name="de.cardcontact.opencard.web.RemoteTerminalServlet" level="INFO"/>
   <logger name="de.cardcontact" level="DEBUG"/>
   <logger name="pki-as-a-service" level="DEBUG"/>
   <logger name="scsh" level="DEBUG"/>
   <logger name="org.openscdp" level="DEBUG"/>
-  <logger name="sc-hsm-persoserver" level="DEBUG"/>
+  -->
   <root level="INFO">
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>
