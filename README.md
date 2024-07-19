@@ -2,6 +2,9 @@
 
 Use this template to create your own PKI-as-a-Service deployment.
 
+See our [introduction](https://www.smartcard-hsm.com/2018/02/13/pki-as-a-service.html) for what it is.
+
+
 ## Deploy a PKIaaS on localhost
 
 Run
@@ -66,3 +69,14 @@ See our [blog](https://www.smartcard-hsm.com/2022/05/11/trustcenter-open-beta.ht
 to create your first trustcenter to manage SmartCard-HSMs, create a PKI, enroll persons
 and systems.
 
+## Connect to the database
+
+    docker exec -it mariadb-test sh -c 'exec mariadb -udbuser -pchangeme'
+
+## Dump the database
+
+    docker exec -i mariadb-test mariadb-dump -udbuser -pchangeme pkiaas
+
+restore with
+
+    docker exec -i mariadb-test sh -c 'exec mariadb -uroot -pchangeme' < dump.sql
