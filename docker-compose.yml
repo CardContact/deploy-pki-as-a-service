@@ -2,28 +2,30 @@ version: '3.6'
 services:
   mariadb-test:
       environment:
+          - MARIADB_AUTO_UPGRADE=1
           - MARIADB_DATABASE=pkiaas
           - MARIADB_ROOT_PASSWORD=changeme
           - MARIADB_USER=dbuser
           - MARIADB_PASSWORD=changeme
+      healthcheck:
+          test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+          start_period: 10s
+          interval: 10s
+          timeout: 5s
+          retries: 3
       volumes:
           - dbdata:/var/lib/mysql
       container_name: mariadb-test
       image: mariadb
-#      ports:
-#          -  3307:3306
 
   pkiaas-test:
       container_name: pkiaas-test
       image: pkiaas-test
       depends_on:
-          - mariadb-test
-      restart: on-failure
-      volumes:
-          - logs:/usr/share/pkiaas/logs
+          mariadb-test:
+              condition: service_healthy
       ports:
           - 8080:8080
 
 volumes:
   dbdata:
-  logs:
