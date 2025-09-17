@@ -26,6 +26,7 @@
   <logger name="scsh" level="DEBUG"/>
   <logger name="org.openscdp" level="DEBUG"/>
   -->
+  <logger name="pki-as-a-service.processes.RegisterMyTokenRequestModel" level="DEBUG"/>
   <root level="INFO">
     <appender-ref ref="stdout"/>
     <appender-ref ref="file"/>

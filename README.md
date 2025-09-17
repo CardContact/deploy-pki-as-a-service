@@ -71,7 +71,7 @@ and systems.
 
 ## Connect to the database
 
-    docker exec -it mariadb-test sh -c 'exec mariadb -udbuser -pchangeme'
+    docker exec -it mariadb-test sh -c 'exec mariadb -udbuser -pchangeme pkiaas'
 
 ## Dump the database
 
