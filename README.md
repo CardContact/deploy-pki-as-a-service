@@ -4,6 +4,8 @@ Use this template to create your own PKI-as-a-Service deployment.
 
 See our [introduction](https://www.smartcard-hsm.com/2018/02/13/pki-as-a-service.html) for what it is.
 
+The documentation can be foung at [www.pki-as-a-service.org](https://www.pki-as-a-service.org).
+
 
 ## Deploy a PKIaaS on localhost
 

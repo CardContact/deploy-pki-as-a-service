@@ -24,22 +24,22 @@
  * @fileoverview Configuration
  */
 
-// Copy this file to etc/configuration.js to overwrite defaults defined in startup.js
-
 GPSystem.log(GPSystem.INFO, "pki-as-a-service.config", "Sourcing from etc/configuration.js");
 
 Config.database = {
 	type: "MySQL",
 	url: "jdbc:mysql://mariadb-test/pkiaas",
-	user: "dbuser",
+	user: "pkiaas",
 	password: "changeme"
 }
 
 
 Config.global = {
-        serverURL: "http://localhost:8080",
-        allowResetDB: false,
-	allowDevHSM: false
+	serverURL: "http://localhost:8080",
+	allowResetDB: false,
+	allowDevHSM: true,
+	disableBuildinX509: true,
+	grantSubscriberRole: true
 }
 
 
@@ -55,12 +55,17 @@ Config.services = [
 		emailfrom: "do-not-reply@cardcontact.de",
 		emailAdmin: "admin@cardcontact.de"
 	},
+
+	core: {
+		rtURL: "http://localhost:8080/core-rt/core",
+		apiURL: "https://pkiaas-backend-test:8443"
+	},
 }
 ];
 
 Config.keystore = {
 	withHSMService: {
-		// Add locally connected SmartCard-HSMs (Requires the --pcsc option at scriptingserver startup)
+		// Add locally connected SmartCard-HSMs.
 		// readerName		is the PC/SC name of the reader for accessing the SmartCard-HSM
 		// protectedPINEntry	set to true to enable PIN entry on the server, e.g using the OCF PIN dialog or class 3 PIN reader.
 		//			This is useful if the server is running on a workstation

@@ -1,11 +1,12 @@
 version: '3.6'
+
 services:
   mariadb-test:
       environment:
           - MARIADB_AUTO_UPGRADE=1
           - MARIADB_DATABASE=pkiaas
           - MARIADB_ROOT_PASSWORD=changeme
-          - MARIADB_USER=dbuser
+          - MARIADB_USER=pkiaas
           - MARIADB_PASSWORD=changeme
       healthcheck:
           test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
@@ -18,14 +19,34 @@ services:
       container_name: mariadb-test
       image: mariadb
 
+  pkiaas-backend-test:
+      container_name: pkiaas-backend-test
+      image: pkiaas-backend-test
+      depends_on:
+          mariadb-test:
+              condition: service_healthy
+      environment:
+          - CORE_DATABASE_URL=jdbc:mariadb://mariadb-test/pkiaas
+          - CORE_DATABASE_USER=pkiaas
+          - CORE_DATABASE_PASSWORD=changeme
+
   pkiaas-test:
       container_name: pkiaas-test
       image: pkiaas-test
       depends_on:
           mariadb-test:
               condition: service_healthy
+
+  nginx-test:
+      container_name: nginx-test
+      image: nginx-test
+      depends_on:
+        pkiaas-backend-test:
+            condition: service_started
+        pkiaas-test:
+            condition: service_started
       ports:
-          - 8080:8080
+          - "8080:8080"
 
 volumes:
   dbdata:

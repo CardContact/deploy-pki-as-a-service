@@ -1,0 +1,80 @@
+#!/bin/bash
+
+set -xe
+
+KEYDIR=key
+REQDIR=req
+CERTDIR=newcerts
+
+HOST=$1
+REQEXT="${2:-v3_req_tls_server}"
+
+#
+# Create a simple CA structure
+#
+
+create_pki() {
+    # Set up Root CA
+    mkdir -p root_ca
+    mkdir -p root_ca/newcerts
+    touch root_ca/index.txt
+    cat > root_ca/serial <<@EOF
+01
+@EOF
+    cat > root_ca/crlnumber <<@EOF
+01
+@EOF
+
+    # Create self-signed Root CA
+    openssl req -config openssl.cnf -x509 -days 3650 -newkey rsa:4096 -nodes -keyout root_ca/prk_root_ca.pem -out cert_root_ca.pem -text -subj "/C=DE/O=OpenSCDP"
+
+    echo -e "Content of Root-CA certificate"
+    openssl x509 -in cert_root_ca.pem -text
+
+
+    # Set up System CA
+    mkdir -p system_ca
+    mkdir -p system_ca/newcerts
+    touch system_ca/index.txt
+    cat > system_ca/serial <<@EOF
+11
+@EOF
+    cat > system_ca/crlnumber <<@EOF
+01
+@EOF
+
+    # Generate key
+    openssl genrsa -out system_ca/prk_system_ca.pem 3072
+    # Generate certificate request
+    openssl req -config openssl.cnf -new -key system_ca/prk_system_ca.pem -out system_ca/req_system_ca.pem -subj "/C=DE/O=OpenSCDP/OU=Test System CA"
+
+    echo -e "Content of System-CA certificate request"
+    openssl req -config openssl.cnf -text -in system_ca/req_system_ca.pem
+
+    # Sign System CA certificate by Root CA
+    openssl ca -config openssl.cnf -batch -name CA_Root -days 1825 -cert cert_root_ca.pem -keyfile root_ca/prk_root_ca.pem -in system_ca/req_system_ca.pem -out cert_system_ca.pem
+
+    #echo -e "Content of System-CA certificate"
+    openssl x509 -in cert_system_ca.pem -text
+
+    cat cert_root_ca.pem cert_system_ca.pem >cacerts.pem
+
+    mkdir -p ${KEYDIR}
+    mkdir -p ${REQDIR}
+    mkdir -p ${CERTDIR}
+}
+
+
+if [ ! -f cacerts.pem ]; then
+    create_pki
+fi
+
+
+openssl req -config openssl.cnf -newkey rsa:2048 -nodes -keyout ${KEYDIR}/prk_${HOST}.pem -out ${REQDIR}/req_${HOST}.pem -reqexts ${REQEXT}  -subj "/C=DE/O=OpenSCDP/OU=Test System CA/CN=${HOST}"
+
+echo -e "Key ${HOST} saved to file key/prk_${HOST}.pem"
+echo -e "Certificate request saved to file ${REQDIR}/req_${HOST}.pem"
+
+openssl req -config openssl.cnf -text -in ${REQDIR}/req_${HOST}.pem
+
+openssl ca -config openssl.cnf -name "CA_System" -batch -in req/req_${HOST}.pem -out ${CERTDIR}/cert_${HOST}.pem

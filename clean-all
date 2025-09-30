@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -xe
+
+cd pkiaas
+ant clean
+
+cd ../pkiaas-backend
+ant clean
+
+cd ../tls
+rm -rf truststore.p12 key newcerts req root_ca system_ca cacerts.pem cert_root_ca.pem cert_system_ca.pem cacerts.pem
+
+
