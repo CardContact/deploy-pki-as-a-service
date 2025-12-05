@@ -26,9 +26,9 @@ services:
           mariadb-test:
               condition: service_healthy
       environment:
-          - CORE_DATABASE_URL=jdbc:mariadb://mariadb-test/pkiaas
-          - CORE_DATABASE_USER=pkiaas
-          - CORE_DATABASE_PASSWORD=changeme
+          - DATABASE_URL=jdbc:mariadb://mariadb-test/pkiaas
+          - DATABASE_USER=pkiaas
+          - DATABASE_PASSWORD=changeme
 
   pkiaas-test:
       container_name: pkiaas-test
@@ -36,6 +36,11 @@ services:
       depends_on:
           mariadb-test:
               condition: service_healthy
+      environment:
+          - DATABASE_URL=jdbc:mariadb://mariadb-test/pkiaas
+          - DATABASE_USER=pkiaas
+          - DATABASE_PASSWORD=changeme
+          - SERVER_URL=http://localhost:8080
 
   nginx-test:
       container_name: nginx-test

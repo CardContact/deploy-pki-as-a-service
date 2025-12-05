@@ -27,10 +27,22 @@
 GPSystem.log(GPSystem.INFO, "pki-as-a-service.config", "Sourcing from etc/configuration.js");
 
 Config.database = {
-	type: "MySQL",
-	url: "jdbc:mysql://mariadb-test/pkiaas",
-	user: "pkiaas",
-	password: "changeme"
+	type: "MySQL"
+}
+
+var envvar = java.lang.System.getenv("DATABASE_URL");
+if (envvar) {
+	Config.database.url = envvar;
+}
+
+var envvar = java.lang.System.getenv("DATABASE_USER");
+if (envvar) {
+	Config.database.user = envvar;
+}
+
+var envvar = java.lang.System.getenv("DATABASE_PASSWORD");
+if (envvar) {
+	Config.database.password = envvar;
 }
 
 
@@ -40,6 +52,11 @@ Config.global = {
 	allowDevHSM: true,
 	disableBuildinX509: true,
 	grantSubscriberRole: true
+}
+
+var envvar = java.lang.System.getenv("SERVER_URL");
+if (envvar) {
+	Config.global.serverURL = envvar;
 }
 
 
@@ -57,7 +74,7 @@ Config.services = [
 	},
 
 	core: {
-		rtURL: "http://localhost:8080/core-rt/core",
+		rtURL: Config.global.serverURL + "/core-rt/core",
 		apiURL: "https://pkiaas-backend-test:8443"
 	},
 }
@@ -76,3 +93,4 @@ Config.keystore = {
 //		]
 	}
 };
+
