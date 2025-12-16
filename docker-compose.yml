@@ -41,6 +41,7 @@ services:
           - DATABASE_USER=pkiaas
           - DATABASE_PASSWORD=changeme
           - SERVER_URL=http://localhost:8080
+          - SERVICE_SCOPE=test
 
   nginx-test:
       container_name: nginx-test

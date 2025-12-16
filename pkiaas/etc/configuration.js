@@ -59,6 +59,11 @@ if (envvar) {
 	Config.global.serverURL = envvar;
 }
 
+var serviceScope = "";
+var envvar = java.lang.System.getenv("SERVICE_SCOPE");
+if (envvar) {
+	serviceScope = "-" + envvar;
+}
 
 Config.services = [
 {
@@ -75,10 +80,11 @@ Config.services = [
 
 	core: {
 		rtURL: Config.global.serverURL + "/core-rt/core",
-		apiURL: "https://pkiaas-backend-test:8443"
+		apiURL: "https://pkiaas-backend" + serviceScope + ":8443"
 	},
 }
 ];
+
 
 Config.keystore = {
 	withHSMService: {
