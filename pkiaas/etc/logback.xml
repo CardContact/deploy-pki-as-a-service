@@ -8,10 +8,10 @@
   <!--
   <logger name="de.cardcontact.opencard.web.RemoteTerminalServlet" level="INFO"/>
   <logger name="de.cardcontact" level="DEBUG"/>
-  <logger name="pki-as-a-service" level="DEBUG"/>
   <logger name="scsh" level="DEBUG"/>
   <logger name="org.openscdp" level="DEBUG"/>
   -->
+  <logger name="pki-as-a-service" level="DEBUG"/>
   <logger name="pki-as-a-service.processes.RegisterMyTokenRequestModel" level="DEBUG"/>
   <root level="INFO">
     <appender-ref ref="stdout"/>

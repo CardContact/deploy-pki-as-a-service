@@ -1,22 +1,22 @@
 FROM debian:13-slim
 
-ENV PAAS_BASE /usr/share/pkiaas
+ENV BASE /usr/share/pkiaas
 ENV USER pkiaas
 
-RUN set -e && \
+RUN set xe && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
     openjdk-21-jre-headless \
     && \
     rm -rf /var/lib/apt/lists/* && \
-    groupadd -r $USER && useradd -r -g $USER -d $PAAS_BASE $USER
+    groupadd -r -g 900 $USER && useradd -r -g $USER -u 900 -d $BASE $USER
 
-WORKDIR $PAAS_BASE
+WORKDIR $BASE
 
 COPY . .
 
 RUN mkdir h2
-RUN chown -R $USER:$USER "$PAAS_BASE";
+RUN chown -R $USER:$USER "$BASE";
 
 USER $USER
 

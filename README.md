@@ -73,7 +73,7 @@ and systems.
 
 ## Connect to the database
 
-    docker exec -it mariadb-test sh -c 'exec mariadb -udbuser -pchangeme pkiaas'
+    docker exec -it mariadb-test sh -c 'exec mariadb -u${MARIADB_USER} -p${MARIADB_PASSWORD} pkiaas'
 
 ## Dump the database
 

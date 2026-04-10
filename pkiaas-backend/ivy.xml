@@ -1,6 +1,6 @@
 <ivy-module version="2.0">
     <info organisation="de.cardcontact" module="pki-as-a-service-backend-lab"/>
     <dependencies>
-        <dependency org="org.openscdp" name="pki-as-a-service-backend" rev="latest.integration"/>
+        <dependency org="org.openscdp" name="pki-as-a-service-backend" rev="latest.release"/>
     </dependencies>
 </ivy-module>
