@@ -9,18 +9,15 @@ VERSION="1.0.${REVISION}"
 echo "Deployment version $VERSION"
 
 # Try to obtain local IVY configuration, use public repo otherwise
-#test -f ivysettings.xml || wget http://jenkins.mi.cardcontact.de/ivysettings.xml || true
+# test -f ivysettings.xml || wget http://jenkins.mi.cardcontact.de/ivysettings.xml || true
 
 create_service() {
     SRV=$1
-    TARNAME=$2
-    NAME=$3
 
     cd tls
     ./issue-cert ${SRV}-${STATUS}
 
     cd ../${SRV}
-    ant clean
 
     mkdir -p etc/tls
     cp ../tls/truststore.p12 etc/tls
@@ -35,10 +32,6 @@ create_service() {
         cp -r ../tas etc/tas
     fi
 
-    ant -Dunpack-fs=1
-    tar xzf ${TARNAME}.tgz --strip-components=1
-    rm ${TARNAME}.tgz
-    chmod +x ${NAME}
     docker --context $DOCKER_CONTEXT build -t ${SRV}-${STATUS} .
     cd ..
 }
@@ -57,7 +50,6 @@ chmod 644 truststore.p12
 cd ..
 
 cd pkiaas
-ant clean
 
 mkdir -p etc/tls
 cp ../tls/truststore.p12 etc/tls
@@ -71,9 +63,7 @@ if [ -d "../tas" ]; then
         cp -r ../tas etc/tas
 fi
 
-ant -Dunpack-fs=1 -Dversion=$VERSION
-chmod +x scriptingserver
 docker --context $DOCKER_CONTEXT build -t pkiaas-${STATUS} .
 cd ..
 
-create_service pkiaas-backend pki-as-a-service-backend start-service
+create_service pkiaas-backend

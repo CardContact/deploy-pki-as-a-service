@@ -27,25 +27,10 @@ to start database and PKI-as-a-Service.
 You need to configure a docker context that points to the remote
 system and set that in the deploy script.
 
-Remember to set the correct Server URL in etc/configuration.js at which the
+Remember to set the correct Server URL in the SERVER_URL environment variable in docker-compose.yaml at which the
 server can be reached.
 
 For Internet facing hosts, we strongly recommend to use a Webserver as proxy.
-
-
-## Installing ant+ivy
-
-The deployment assembles artifacts from https://www.openscdp.org/ivy using
-ant as build tools and ivy as dependency management. Both ant and ivy must be
-installed on the machine that controls the deployment (i.e. the build system).
-
-On Debian ant and ivy can be installed using
-
-	sudo apt install ant ivy
-
-The ivy module must be made available to ant with a link to the ivy.jar in /usr/share/ant/lib with
-
-	sudo ln -s -t /usr/share/ant/lib /usr/share/java/ivy.jar
 
 
 ## Register the first user
